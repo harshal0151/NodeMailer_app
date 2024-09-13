@@ -7,10 +7,12 @@ const port = 6969;
 const app = express();
 
 // Proper CORS options
-app.use(cors({
-  origin: "*", // Adjust this to restrict origins in production
-  methods: ["GET", "POST"],
-}));
+app.use(
+  cors({
+    origin: "*", // Adjust this to restrict origins in production
+    methods: ["GET", "POST"],
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -31,7 +33,7 @@ app.post("/sendEmail", async (req, res) => {
     from: process.env.MY_USERNAME,
     to: process.env.MY_USERNAME,
     subject: `New message from ${name}`, // Dynamic subject
-    text: `${name} (email: ${email}) has a Subject for you:\n\n${message}\n\nmessage: ${subject}`,
+    text: `${name} (email: ${email}) has a Subject for you:\n\n${subject}\n\nmessage: ${message}`,
   };
 
   try {
@@ -40,7 +42,11 @@ app.post("/sendEmail", async (req, res) => {
     res.status(200).json({ message: "Mail is sent successfully!" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "There was an error sending the mail. Please try again." });
+    res
+      .status(500)
+      .json({
+        message: "There was an error sending the mail. Please try again.",
+      });
   }
 });
 
